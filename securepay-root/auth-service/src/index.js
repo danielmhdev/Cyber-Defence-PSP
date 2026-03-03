@@ -1,12 +1,12 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { generateToken } = require('./auth');
 
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
+// in-memory store
 const users = [];
 
 app.post('/register', async (req, res) => {
@@ -22,7 +22,7 @@ app.post('/login', async (req, res) => {
   if (!user) return res.sendStatus(401);
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) return res.sendStatus(401);
-  const token = jwt.sign({ sub: username }, JWT_SECRET, { expiresIn: '1h' });
+  const token = generateToken(user);
   res.json({ token });
 });
 

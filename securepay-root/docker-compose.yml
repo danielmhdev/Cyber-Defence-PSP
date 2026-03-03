@@ -4,18 +4,41 @@ services:
     build: ./api-gateway
     ports:
       - "3000:3000"
+    environment:
+      - JWT_SECRET=your_jwt_secret
     depends_on:
       - auth-service
       - transfer-service
+    networks:
+      - secure-net
+
   auth-service:
     build: ./auth-service
     ports:
       - "3001:3000"
+    environment:
+      - JWT_SECRET=your_jwt_secret
+    networks:
+      - secure-net
+
   transfer-service:
     build: ./transfer-service
     ports:
       - "3002:3000"
+    environment:
+      - JWT_SECRET=your_jwt_secret
+    networks:
+      - secure-net
+
   audit-logs:
     build: ./audit-logs
     ports:
       - "3003:3000"
+    depends_on:
+      - transfer-service
+    networks:
+      - secure-net
+
+networks:
+  secure-net:
+    driver: bridge

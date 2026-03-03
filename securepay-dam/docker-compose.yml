@@ -1,17 +1,64 @@
 version: '3.8'
 services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: securepay
+      POSTGRES_USER: securepay
+      POSTGRES_PASSWORD: securepay
+    volumes: 
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - secure-net
+
   auth-service:
     build: ./auth-service
     ports:
       - "3001:3000"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+    networks:
+      - secure-net
+
   transfer-service:
     build: ./transfer-service
     ports:
       - "3002:3000"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_HOST=db
+      - DB_USER=securepay
+      - DB_PASSWORD=securepay
+      - DB_NAME=securepay
     depends_on:
       - db
+      - auth-service
+    networks:
+      - secure-net
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - auth-service
+      - transfer-service
+    networks:
       - secure-net
 
 networks:
   secure-net:
     driver: bridge # Red aislada: Los servicios no se ven desde el exterior, solo vía Gateway
+
+
