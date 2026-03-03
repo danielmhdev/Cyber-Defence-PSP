@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "3001:3000"
+  transfer-service:
+    build: ./transfer-service
+    ports:
+      - "3002:3000"
