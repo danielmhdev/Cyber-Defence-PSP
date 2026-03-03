@@ -1,0 +1,27 @@
+{
+  "name": "proyecto-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielmhdev/Cyber-Defence-PSP.git"
+  },
+  "keywords": [],
+  "author": "Daniel Martín Hernández",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielmhdev/Cyber-Defence-PSP/issues"
+  },
+  "homepage": "https://github.com/danielmhdev/Cyber-Defence-PSP#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "epress": "^0.0.1-security",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
