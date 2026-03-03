@@ -8,3 +8,10 @@ services:
     build: ./transfer-service
     ports:
       - "3002:3000"
+    depends_on:
+      - db
+      - secure-net
+
+networks:
+  secure-net:
+    driver: bridge # Red aislada: Los servicios no se ven desde el exterior, solo vía Gateway
